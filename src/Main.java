@@ -1,12 +1,14 @@
 import model.*;
 
-import java.io.File;
 import java.util.*;
 
 public class Main {
     public static PathPrinter pathPrinter = new PathPrinter();
     public static BFSThread bfsThread = new BFSThread(pathPrinter);
     public static DFSThread dfsThread = new DFSThread(pathPrinter);
+    public static PersonPrinter personPrinter = new PersonPrinter();
+    public static AncestorThread ancestorThread = new AncestorThread(personPrinter);
+    public static DescendantThread descendantThread = new DescendantThread(personPrinter);
 
     public static void interpret(String line, HashSet<Person> roots, Scanner in) {
         Scanner scan = new Scanner(line);
@@ -21,6 +23,10 @@ public class Main {
                 find(scan, roots);
             } else if (command.equals("explore")) {
                 explore(in, roots);
+            } else if (command.equals("ancestor")) {
+                ancestor(scan, roots);
+            }else if (command.equals("descendent")) {
+                descendent(scan, roots);
             } else {
                 System.out.println("Usage: [add/print/find/explore] ...");
             }
@@ -147,6 +153,78 @@ public class Main {
             relatives = current.explore();
         }
         in.nextLine();
+    }
+
+    public static void ancestor(Scanner scan, HashSet<Person> roots) {
+        scan.useDelimiter(",");
+        try {
+            Person person1 = null, person2 = null;
+            Person target = new Person(scan.next().strip());
+            for (Person root : roots) {
+                person1 = findBFS(root, target);
+                if (person1 != null) {
+                    break;
+                }
+            }
+            if (person1 == null) {
+                System.out.println(target + " not found");
+                return;
+            }
+            target = new Person(scan.next().strip());
+            for (Person root : roots) {
+                person2 = findBFS(root, target);
+                if (person2 != null) {
+                    break;
+                }
+            }
+            if (person2 == null) {
+                System.out.println(target + " not found");
+                return;
+            }
+            ancestorThread.setup(person1, person2);
+            Thread ancestor = new Thread(ancestorThread);
+            ancestor.start();
+            ancestor.join();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Usage: ancestor [name], [name]");
+        }
+    }
+
+    public static void descendent(Scanner scan, HashSet<Person> roots) {
+        scan.useDelimiter(",");
+        try {
+            Person person1 = null, person2 = null;
+            Person target = new Person(scan.next().strip());
+            for (Person root : roots) {
+                person1 = findBFS(root, target);
+                if (person1 != null) {
+                    break;
+                }
+            }
+            if (person1 == null) {
+                System.out.println(target + " not found");
+                return;
+            }
+            target = new Person(scan.next().strip());
+            for (Person root : roots) {
+                person2 = findBFS(root, target);
+                if (person2 != null) {
+                    break;
+                }
+            }
+            if (person2 == null) {
+                System.out.println(target + " not found");
+                return;
+            }
+            descendantThread.setup(person1, person2);
+            Thread ancestor = new Thread(descendantThread);
+            ancestor.start();
+            ancestor.join();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Usage: descendent [name], [name]");
+        }
     }
 
     public static Person findBFS(Person root, Person target){

@@ -245,6 +245,18 @@ public class Person {
         }
     }
 
+    public void fillQueueWithParents(Collection<Person> queue) {
+        for (Person p : parents) {
+            queue.add(p);
+        }
+    }
+
+    public void fillQueueWithChildren(Collection<Person> queue) {
+        for (Person p : children) {
+            queue.add(p);
+        }
+    }
+
     public void print() {
         System.out.println(name);
         System.out.print("Parents: ");
