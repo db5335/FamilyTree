@@ -3,20 +3,30 @@ package model;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Scanner;
 
+/**
+ * Class used to generate a randomized family tree.
+ *
+ * @author Dominick Banasik
+ */
 public class TreeGenerator {
     private HashSet<String> names;
     private HashSet<String> used;
     private ArrayList<String> nameList;
 
+    /**
+     * Initialize the names for the class.
+     */
     public TreeGenerator() {
         names = new HashSet<>();
         used = new HashSet<>();
         nameList = new ArrayList<>();
     }
 
+    /**
+     * Read a list of names from a file.
+     */
     public void scanNames() {
         try (Scanner scan = new Scanner(new File("files/names.txt"))) {
             String line;
@@ -33,6 +43,11 @@ public class TreeGenerator {
         }
     }
 
+    /**
+     * Combine roots of separate trees to one larger tree.
+     *
+     * @param roots the roots to combine
+     */
     private void combineRoots(ArrayList<Person> roots) {
         if (roots.size() == 1) {
             return;
@@ -54,6 +69,12 @@ public class TreeGenerator {
         combineRoots(roots);
     }
 
+    /**
+     * Make the tree by creating 512 smaller trees and repeatedly combining
+     * them.
+     *
+     * @return the root of the combined tree
+     */
     public Person generateTree() {
         ArrayList<Person> roots = new ArrayList<>();
         int count = 0;
@@ -110,5 +131,4 @@ public class TreeGenerator {
 
         return roots.get(0);
     }
-
 }

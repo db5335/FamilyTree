@@ -3,8 +3,12 @@ package model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Queue;
 
+/**
+ * Class representing a person in the family tree.
+ *
+ * @author Dominick Banasik
+ */
 public class Person {
     private String name;
     private Person spouse;
@@ -12,6 +16,11 @@ public class Person {
     private ArrayList<Person> siblings;
     private ArrayList<Person> children;
 
+    /**
+     * Constructor for the Person class.
+     *
+     * @param name the person's name
+     */
     public Person(String name) {
         this.name = name;
         parents = new ArrayList<>();
@@ -19,6 +28,11 @@ public class Person {
         children = new ArrayList<>();
     }
 
+    /**
+     * Add a sibling to the person.
+     *
+     * @param sibling the sibling to add
+     */
     public void addSibling(Person sibling) {
         if (this.equals(sibling)) return;
         if (spouse != null && spouse.equals(sibling)) return;
@@ -102,6 +116,11 @@ public class Person {
         }
     }
 
+    /**
+     * Add a child to the person.
+     *
+     * @param child the child to add
+     */
     public void addChild(Person child) {
         if (this.equals(child)) return;
         if (this.children.contains(child)) return;
@@ -131,6 +150,11 @@ public class Person {
         }
     }
 
+    /**
+     * Marry two people.
+     *
+     * @param spouse the person's spouse
+     */
     public void marry(Person spouse) {
         if (this.equals(spouse)) return;
         if (this.spouse != null && this.spouse.equals(spouse)) {
@@ -187,6 +211,12 @@ public class Person {
         }*/
     }
 
+    /**
+     * Fill a queue with the person's direct relatives.
+     *
+     * @param queue the queue to fill
+     * @param visited set of all visited people
+     */
     public void fillQueue(Collection<Person> queue, HashSet<Person> visited) {
         for (Person p : parents) {
             if (!visited.contains(p)) {
@@ -208,6 +238,14 @@ public class Person {
         }
     }
 
+    /**
+     * Fill a queue with the person's relatives and update the respective paths.
+     *
+     * @param queue the queue to fill
+     * @param visited set of all visited people
+     * @param paths the queue of paths
+     * @param path the current path
+     */
     public void fillQueueWithPath(Collection<Person> queue, HashSet<Person> visited, Collection<Path> paths, Path path) {
         for (Person p : parents) {
             if (!visited.contains(p)) {
@@ -245,18 +283,31 @@ public class Person {
         }
     }
 
+    /**
+     * Fill a queue with only the person's parents.
+     *
+     * @param queue the queue to fill
+     */
     public void fillQueueWithParents(Collection<Person> queue) {
         for (Person p : parents) {
             queue.add(p);
         }
     }
 
+    /**
+     * Fill a queue with only the person's children.
+     *
+     * @param queue the queue to fill
+     */
     public void fillQueueWithChildren(Collection<Person> queue) {
         for (Person p : children) {
             queue.add(p);
         }
     }
 
+    /**
+     * Print the person's name and direct relatives.
+     */
     public void print() {
         System.out.println(name);
         System.out.print("Parents: ");
@@ -289,6 +340,11 @@ public class Person {
         System.out.println();
     }
 
+    /**
+     * Get a list of the person's direct relatives.
+     *
+     * @return list of relatives
+     */
     public ArrayList<Person> explore() {
         ArrayList<Person> relatives = new ArrayList<>();
         int count = 0;
@@ -312,6 +368,11 @@ public class Person {
         return relatives;
     }
 
+    /**
+     * Combine two people from separate family tree by adding a new relationship.
+     *
+     * @param other the person to combine with
+     */
     public void combineWith(Person other) {
         ArrayList<Person> relatives1 = new ArrayList<>();
         HashSet<Person> visited1 = new HashSet<>();
@@ -377,10 +438,21 @@ public class Person {
         }
     }
 
+    /**
+     * String representation for the Person class.
+     *
+     * @return the person's name
+     */
     public String toString() {
         return this.name;
     }
 
+    /**
+     * Check if two people are the same.
+     *
+     * @param other the other person
+     * @return whether or not their names are equal
+     */
     public boolean equals(Object other) {
         if (!(other instanceof Person)){
             return false;

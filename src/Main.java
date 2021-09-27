@@ -2,6 +2,12 @@ import model.*;
 
 import java.util.*;
 
+/**
+ * The program builds a randomized family tree and allows the user to perform
+ * various operations on it.
+ *
+ * @author Dominick Banasik
+ */
 public class Main {
     public static PathPrinter pathPrinter = new PathPrinter();
     public static BFSThread bfsThread = new BFSThread(pathPrinter);
@@ -10,6 +16,13 @@ public class Main {
     public static AncestorThread ancestorThread = new AncestorThread(personPrinter);
     public static DescendantThread descendantThread = new DescendantThread(personPrinter);
 
+    /**
+     * Interpret a line from the user's input.
+     *
+     * @param line the line to interpret
+     * @param roots roots of the family trees
+     * @param in the input scanner
+     */
     public static void interpret(String line, HashSet<Person> roots, Scanner in) {
         Scanner scan = new Scanner(line);
         scan.useDelimiter(" ");
@@ -37,6 +50,12 @@ public class Main {
         scan.close();
     }
 
+    /**
+     * Add a new relationship to the existing family tree.
+     *
+     * @param scan the line scanner
+     * @param roots roots of the family trees
+     */
     public static void add(Scanner scan, HashSet<Person> roots) {
         scan.useDelimiter(" ");
         try {
@@ -91,6 +110,12 @@ public class Main {
         }
     }
 
+    /**
+     * Print an individual from the tree.
+     *
+     * @param scan the line scanner
+     * @param roots roots of the family trees
+     */
     public static void print(Scanner scan, HashSet<Person> roots) {
         scan.useDelimiter(",");
         try {
@@ -112,6 +137,12 @@ public class Main {
         }
     }
 
+    /**
+     * Find the relationship between two people in the tree.
+     *
+     * @param scan the line scanner
+     * @param roots roots of the family trees
+     */
     public static void find(Scanner scan, HashSet<Person> roots) {
         scan.useDelimiter(",");
         try {
@@ -144,6 +175,12 @@ public class Main {
         }
     }
 
+    /**
+     * Explore the family tree from the root outwards.
+     *
+     * @param in the input scanner
+     * @param roots roots of the family trees
+     */
     public static void explore(Scanner in, HashSet<Person> roots) {
         int next;
         Person current = (Person) roots.toArray()[0];
@@ -155,6 +192,12 @@ public class Main {
         in.nextLine();
     }
 
+    /**
+     * Find the first common ancestor of two people.
+     *
+     * @param scan the line scanner
+     * @param roots roots of the family trees
+     */
     public static void ancestor(Scanner scan, HashSet<Person> roots) {
         scan.useDelimiter(",");
         try {
@@ -191,6 +234,12 @@ public class Main {
         }
     }
 
+    /**
+     * Find the first descendant of two people.
+     *
+     * @param scan the line scanner
+     * @param roots roots of the family trees
+     */
     public static void descendent(Scanner scan, HashSet<Person> roots) {
         scan.useDelimiter(",");
         try {
@@ -227,6 +276,13 @@ public class Main {
         }
     }
 
+    /**
+     * Find a person in the family tree.
+     *
+     * @param root root of a family tree
+     * @param target person to find
+     * @return node of the target person
+     */
     public static Person findBFS(Person root, Person target){
         Queue<Person> queue = new LinkedList<>();
         HashSet<Person> visited = new HashSet<>();
@@ -242,6 +298,11 @@ public class Main {
         return current;
     }
 
+    /**
+     * Initialize the family tree and prompt the user for input.
+     *
+     * @param args the command line arguments
+     */
     public static void main(String[] args) {
         String filePathPrefix = "files/";
         String filePathSuffix = ".txt";
